@@ -1,0 +1,8 @@
+# Test
+- type: parallel
+  steps:
+  - service: test
+    command: >-
+      /bin/sh -c '
+      CGO_ENABLED=0 go test -coverprofile=coverage.out ./... &&
+      .codeship/publish_coverage.sh'
