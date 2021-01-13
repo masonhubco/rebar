@@ -4,7 +4,6 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/99designs/gqlgen/example/starwars/generated"
 	"github.com/99designs/gqlgen/graphql/handler"
 	"github.com/99designs/gqlgen/graphql/handler/transport"
 	"github.com/gorilla/websocket"
@@ -50,7 +49,7 @@ func buildGraphQLHandler() func(w http.ResponseWriter, r *http.Request) {
 	})
 
 	/// Are iframes different headers? or host headers
-	gqlSrv := handler.New(generated.NewExecutableSchema(generated.Config{Resolvers: &graph.Resolver{}}))
+	gqlSrv := handler.New(graph.NewExecutableSchema(graph.Config{Resolvers: &graph.Resolver{}}))
 	gqlSrv.AddTransport(transport.POST{})    // is that needed?
 	gqlSrv.AddTransport(transport.Websocket{ // is that needed?
 		KeepAlivePingInterval: 10 * time.Second,

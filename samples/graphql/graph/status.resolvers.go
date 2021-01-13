@@ -5,21 +5,20 @@ import (
 	"time"
 
 	"github.com/masonhubco/rebar/samples/graphql/graph/gplmodels"
-	"github.com/masonhubco/rebar/samples/graphql/model"
 )
 
-func (r *mutationResolver) CreateStatus(ctx context.Context, input gplmodels.NewStatus) (*model.Status, error) {
-	status := &model.Status{
-		Status: input.State,
+func (r *mutationResolver) CreateStatus(ctx context.Context, input gplmodels.NewStatus) (*gplmodels.Status, error) {
+	status := &gplmodels.Status{
+		State:  input.State,
 		Redis:  input.Redis,
 		Uptime: input.Uptime,
 	}
 	return status, nil
 }
 
-func (r *queryResolver) Status(ctx context.Context) (*model.Status, error) {
-	status := &model.Status{
-		Status: "UP",
+func (r *queryResolver) Status(ctx context.Context) (*gplmodels.Status, error) {
+	status := &gplmodels.Status{
+		State:  "UP",
 		Redis:  "Connected",
 		Uptime: time.Now().Format(time.RFC3339),
 	}

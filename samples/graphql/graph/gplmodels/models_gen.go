@@ -7,3 +7,9 @@ type NewStatus struct {
 	Redis  string `json:"Redis"`
 	Uptime string `json:"Uptime"`
 }
+
+type Status struct {
+	State  string `json:"State"`
+	Redis  string `json:"Redis"`
+	Uptime string `json:"Uptime"`
+}

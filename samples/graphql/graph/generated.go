@@ -13,7 +13,6 @@ import (
 	"github.com/99designs/gqlgen/graphql"
 	"github.com/99designs/gqlgen/graphql/introspection"
 	"github.com/masonhubco/rebar/samples/graphql/graph/gplmodels"
-	"github.com/masonhubco/rebar/samples/graphql/model"
 	gqlparser "github.com/vektah/gqlparser/v2"
 	"github.com/vektah/gqlparser/v2/ast"
 )
@@ -38,7 +37,6 @@ type Config struct {
 type ResolverRoot interface {
 	Mutation() MutationResolver
 	Query() QueryResolver
-	Status() StatusResolver
 }
 
 type DirectiveRoot struct {
@@ -61,13 +59,10 @@ type ComplexityRoot struct {
 }
 
 type MutationResolver interface {
-	CreateStatus(ctx context.Context, input gplmodels.NewStatus) (*model.Status, error)
+	CreateStatus(ctx context.Context, input gplmodels.NewStatus) (*gplmodels.Status, error)
 }
 type QueryResolver interface {
-	Status(ctx context.Context) (*model.Status, error)
-}
-type StatusResolver interface {
-	State(ctx context.Context, obj *model.Status) (string, error)
+	Status(ctx context.Context) (*gplmodels.Status, error)
 }
 
 type executableSchema struct {
@@ -324,9 +319,9 @@ func (ec *executionContext) _Mutation_createStatus(ctx context.Context, field gr
 		}
 		return graphql.Null
 	}
-	res := resTmp.(*model.Status)
+	res := resTmp.(*gplmodels.Status)
 	fc.Result = res
-	return ec.marshalNStatus2ᚖgithubᚗcomᚋmasonhubcoᚋrebarᚋsamplesᚋgraphqlᚋmodelᚐStatus(ctx, field.Selections, res)
+	return ec.marshalNStatus2ᚖgithubᚗcomᚋmasonhubcoᚋrebarᚋsamplesᚋgraphqlᚋgraphᚋgplmodelsᚐStatus(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Query_Status(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
@@ -359,9 +354,9 @@ func (ec *executionContext) _Query_Status(ctx context.Context, field graphql.Col
 		}
 		return graphql.Null
 	}
-	res := resTmp.(*model.Status)
+	res := resTmp.(*gplmodels.Status)
 	fc.Result = res
-	return ec.marshalNStatus2ᚖgithubᚗcomᚋmasonhubcoᚋrebarᚋsamplesᚋgraphqlᚋmodelᚐStatus(ctx, field.Selections, res)
+	return ec.marshalNStatus2ᚖgithubᚗcomᚋmasonhubcoᚋrebarᚋsamplesᚋgraphqlᚋgraphᚋgplmodelsᚐStatus(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Query___type(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
@@ -435,7 +430,7 @@ func (ec *executionContext) _Query___schema(ctx context.Context, field graphql.C
 	return ec.marshalO__Schema2ᚖgithubᚗcomᚋ99designsᚋgqlgenᚋgraphqlᚋintrospectionᚐSchema(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _Status_State(ctx context.Context, field graphql.CollectedField, obj *model.Status) (ret graphql.Marshaler) {
+func (ec *executionContext) _Status_State(ctx context.Context, field graphql.CollectedField, obj *gplmodels.Status) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -446,14 +441,14 @@ func (ec *executionContext) _Status_State(ctx context.Context, field graphql.Col
 		Object:     "Status",
 		Field:      field,
 		Args:       nil,
-		IsMethod:   true,
-		IsResolver: true,
+		IsMethod:   false,
+		IsResolver: false,
 	}
 
 	ctx = graphql.WithFieldContext(ctx, fc)
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.Status().State(rctx, obj)
+		return obj.State, nil
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -470,7 +465,7 @@ func (ec *executionContext) _Status_State(ctx context.Context, field graphql.Col
 	return ec.marshalNString2string(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _Status_Redis(ctx context.Context, field graphql.CollectedField, obj *model.Status) (ret graphql.Marshaler) {
+func (ec *executionContext) _Status_Redis(ctx context.Context, field graphql.CollectedField, obj *gplmodels.Status) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -505,7 +500,7 @@ func (ec *executionContext) _Status_Redis(ctx context.Context, field graphql.Col
 	return ec.marshalNString2string(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _Status_Uptime(ctx context.Context, field graphql.CollectedField, obj *model.Status) (ret graphql.Marshaler) {
+func (ec *executionContext) _Status_Uptime(ctx context.Context, field graphql.CollectedField, obj *gplmodels.Status) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -1748,7 +1743,7 @@ func (ec *executionContext) _Query(ctx context.Context, sel ast.SelectionSet) gr
 
 var statusImplementors = []string{"Status"}
 
-func (ec *executionContext) _Status(ctx context.Context, sel ast.SelectionSet, obj *model.Status) graphql.Marshaler {
+func (ec *executionContext) _Status(ctx context.Context, sel ast.SelectionSet, obj *gplmodels.Status) graphql.Marshaler {
 	fields := graphql.CollectFields(ec.OperationContext, sel, statusImplementors)
 
 	out := graphql.NewFieldSet(fields)
@@ -1758,28 +1753,19 @@ func (ec *executionContext) _Status(ctx context.Context, sel ast.SelectionSet, o
 		case "__typename":
 			out.Values[i] = graphql.MarshalString("Status")
 		case "State":
-			field := field
-			out.Concurrently(i, func() (res graphql.Marshaler) {
-				defer func() {
-					if r := recover(); r != nil {
-						ec.Error(ctx, ec.Recover(ctx, r))
-					}
-				}()
-				res = ec._Status_State(ctx, field, obj)
-				if res == graphql.Null {
-					atomic.AddUint32(&invalids, 1)
-				}
-				return res
-			})
+			out.Values[i] = ec._Status_State(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
 		case "Redis":
 			out.Values[i] = ec._Status_Redis(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
-				atomic.AddUint32(&invalids, 1)
+				invalids++
 			}
 		case "Uptime":
 			out.Values[i] = ec._Status_Uptime(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
-				atomic.AddUint32(&invalids, 1)
+				invalids++
 			}
 		default:
 			panic("unknown field " + strconv.Quote(field.Name))
@@ -2057,11 +2043,11 @@ func (ec *executionContext) unmarshalNNewStatus2githubᚗcomᚋmasonhubcoᚋreba
 	return res, graphql.ErrorOnPath(ctx, err)
 }
 
-func (ec *executionContext) marshalNStatus2githubᚗcomᚋmasonhubcoᚋrebarᚋsamplesᚋgraphqlᚋmodelᚐStatus(ctx context.Context, sel ast.SelectionSet, v model.Status) graphql.Marshaler {
+func (ec *executionContext) marshalNStatus2githubᚗcomᚋmasonhubcoᚋrebarᚋsamplesᚋgraphqlᚋgraphᚋgplmodelsᚐStatus(ctx context.Context, sel ast.SelectionSet, v gplmodels.Status) graphql.Marshaler {
 	return ec._Status(ctx, sel, &v)
 }
 
-func (ec *executionContext) marshalNStatus2ᚖgithubᚗcomᚋmasonhubcoᚋrebarᚋsamplesᚋgraphqlᚋmodelᚐStatus(ctx context.Context, sel ast.SelectionSet, v *model.Status) graphql.Marshaler {
+func (ec *executionContext) marshalNStatus2ᚖgithubᚗcomᚋmasonhubcoᚋrebarᚋsamplesᚋgraphqlᚋgraphᚋgplmodelsᚐStatus(ctx context.Context, sel ast.SelectionSet, v *gplmodels.Status) graphql.Marshaler {
 	if v == nil {
 		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
 			ec.Errorf(ctx, "must not be null")
