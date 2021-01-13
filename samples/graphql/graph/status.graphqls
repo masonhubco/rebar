@@ -17,3 +17,7 @@ input NewStatus {
 type Mutation {
   createStatus(input: NewStatus!): Status!
 }
+
+type Query {
+Status: Status!
+}
