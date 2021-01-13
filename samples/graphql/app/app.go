@@ -6,6 +6,7 @@ import (
 
 	"github.com/99designs/gqlgen/graphql/handler"
 	"github.com/99designs/gqlgen/graphql/handler/transport"
+	"github.com/99designs/gqlgen/graphql/playground"
 	"github.com/gorilla/websocket"
 	"github.com/masonhubco/rebar/middleware"
 	"github.com/masonhubco/rebar/samples/graphql/api"
@@ -30,6 +31,7 @@ func App() *service.Rebar {
 		apiSubRouter.HandleFunc("/status", api.Status())
 
 		app.Router.HandleFunc("/query", buildGraphQLHandler())
+		app.Router.HandleFunc("/play", playground.Handler("Test", "/query"))
 
 	}
 	return app
@@ -42,15 +44,20 @@ type handlerInterface interface {
 func buildGraphQLHandler() func(w http.ResponseWriter, r *http.Request) {
 	c := cors.New(cors.Options{
 		/// is this going to work?
-		AllowedOrigins: []string{"https://*.masonhub.co"},
-		// AllowedOrigins:   []string{"*"},
+		// AllowedOrigins: []string{"https://*.masonhub.co"},
+		AllowedOrigins: []string{"*"},
 		// AllowCredentials: true,
-		AllowedHeaders: []string{"CENSUS_TOKEN", "Content-Type", "Accept-Language"},
+		AllowedMethods: []string{http.MethodGet, http.MethodPost, http.MethodDelete},
+		AllowedHeaders: []string{"Content-Type", "Accept-Language"},
+		Debug:          true,
 	})
 
 	/// Are iframes different headers? or host headers
-	gqlSrv := handler.New(graph.NewExecutableSchema(graph.Config{Resolvers: &graph.Resolver{}}))
-	gqlSrv.AddTransport(transport.POST{})    // is that needed?
+	gqlSrv := handler.NewDefaultServer(graph.NewExecutableSchema(graph.Config{Resolvers: &graph.Resolver{}}))
+	gqlSrv.AddTransport(transport.Options{})
+	gqlSrv.AddTransport(transport.GET{})
+	gqlSrv.AddTransport(transport.POST{})
+	gqlSrv.AddTransport(transport.MultipartForm{})
 	gqlSrv.AddTransport(transport.Websocket{ // is that needed?
 		KeepAlivePingInterval: 10 * time.Second,
 		Upgrader: websocket.Upgrader{
@@ -59,8 +66,8 @@ func buildGraphQLHandler() func(w http.ResponseWriter, r *http.Request) {
 			},
 		},
 	})
-	c.Handler(gqlSrv)
+
 	return func(w http.ResponseWriter, r *http.Request) {
-		c.HandlerFunc(w, r)
+		c.Handler(gqlSrv).ServeHTTP(w, r)
 	}
 }
