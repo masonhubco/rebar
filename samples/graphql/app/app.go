@@ -4,6 +4,7 @@ import (
 	"net/http"
 
 	"github.com/99designs/gqlgen/graphql/handler"
+	"github.com/99designs/gqlgen/graphql/handler/extension"
 	"github.com/99designs/gqlgen/graphql/handler/transport"
 	"github.com/99designs/gqlgen/graphql/playground"
 	"github.com/masonhubco/rebar/middleware"
@@ -44,21 +45,18 @@ type handlerInterface interface {
 func buildGraphQLHandler(environment string) func(w http.ResponseWriter, r *http.Request) {
 	c := cors.New(cors.Options{
 		AllowedOrigins: []string{"*"},
-		AllowedMethods: []string{http.MethodGet, http.MethodPost, http.MethodDelete},
+		AllowedMethods: []string{http.MethodGet, http.MethodPost, http.MethodOptions},
 		AllowedHeaders: []string{"Content-Type", "Accept-Language"},
 		Debug:          false,
 	})
-	var gqlSrv *handler.Server
+	gqlSrv := handler.New(graph.NewExecutableSchema(graph.Config{Resolvers: &graph.Resolver{}}))
 	if environment == "development" {
-		//GraphQL playground schema does not load with `New` but works with `NewDefaultServer`
-		gqlSrv = handler.NewDefaultServer(graph.NewExecutableSchema(graph.Config{Resolvers: &graph.Resolver{}}))
-	} else {
-		gqlSrv = handler.New(graph.NewExecutableSchema(graph.Config{Resolvers: &graph.Resolver{}}))
-		gqlSrv.AddTransport(transport.Options{})
-		gqlSrv.AddTransport(transport.GET{})
-		gqlSrv.AddTransport(transport.POST{})
-		gqlSrv.AddTransport(transport.MultipartForm{})
+		//To make graphql schema load properly in playground development environment.
+		gqlSrv.Use(extension.Introspection{})
 	}
+	gqlSrv.AddTransport(transport.Options{})
+	gqlSrv.AddTransport(transport.GET{})
+	gqlSrv.AddTransport(transport.POST{})
 
 	return func(w http.ResponseWriter, r *http.Request) {
 		c.Handler(gqlSrv).ServeHTTP(w, r)
