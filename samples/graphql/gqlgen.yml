@@ -14,8 +14,8 @@ exec:
 
 # Where should any generated models go?
 model:
-  filename: graph/gplmodels/models_gen.go
-  package: gplmodels
+  filename: graph/gqlmodels/models_gen.go
+  package: gqlmodels
 
 # Where should the resolver implementations go?
 # resolver:
@@ -34,8 +34,8 @@ model:
 
 # gqlgen will search for any type names in the schema in these go packages
 # if they match it will use them, otherwise it will generate them.
-autobind:
-  - "github.com/masonhubco/rebar/samples/graphql/graph/gplmodels"
+# autobind:
+#   - "github.com/masonhubco/rebar/samples/graphql/graph/gqlmodels"
 
 # This section declares type mapping between the GraphQL and go type systems
 #
