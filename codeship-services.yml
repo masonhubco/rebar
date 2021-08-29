@@ -1,6 +1,6 @@
 test:
   build:
-    dockerfile: build_dockerfile
+    dockerfile: .codeship/build.Dockerfile
   environment:
     ENV: test
     GO111MODULE: "on"
