@@ -33,7 +33,7 @@ func Test_Processors(t *testing.T) {
 		{
 			name: "bad start and bad stop",
 			givenOptions: rebar.Options{
-				ShutDownWaitInSec: 1 * time.Second,
+				ShutDownWait: 1 * time.Second,
 			},
 			mockProcessor: mockProcessor{
 				startFn: func() error { return errors.New("totally bad thing that happened") },
