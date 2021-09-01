@@ -50,7 +50,7 @@ func Test_Rebar_RunWithContext(t *testing.T) {
 		{
 			name: "bad start",
 			givenOptions: rebar.Options{
-				ShutDownWaitInSec:           time.Second,
+				ShutDownWait:                time.Second,
 				StopOnProcessorStartFailure: true,
 			},
 			mockProcessor: &mockProcessor{
@@ -62,7 +62,7 @@ func Test_Rebar_RunWithContext(t *testing.T) {
 		{
 			name: "easy stop",
 			givenOptions: rebar.Options{
-				ShutDownWaitInSec:           time.Second,
+				ShutDownWait:                time.Second,
 				StopOnProcessorStartFailure: true,
 			},
 			mockProcessor: &mockProcessor{
@@ -126,10 +126,10 @@ func Test_Rebar_New(t *testing.T) {
 			givenOptions: rebar.Options{
 				Environment:                 "test",
 				Port:                        "3310",
-				WriteTimeoutInSec:           35 * time.Second,
-				ReadTimeoutInSec:            30 * time.Second,
-				IdleTimeoutInSec:            120 * time.Second,
-				ShutDownWaitInSec:           60 * time.Second,
+				WriteTimeout:                35 * time.Second,
+				ReadTimeout:                 30 * time.Second,
+				IdleTimeout:                 120 * time.Second,
+				ShutDownWait:                60 * time.Second,
 				StopOnProcessorStartFailure: true,
 			},
 			wantEnvironment:   "test",
