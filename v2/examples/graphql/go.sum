@@ -59,8 +59,8 @@ github.com/masonhubco/rebar v0.1.0 h1:RJinT708bnMuNvrr3qlzs2//WlzjJPRz2U/ZOf0J3g
 github.com/masonhubco/rebar v0.1.0/go.mod h1:UjYwHJusHGboBt1QC0G3847A/cMFnNtkWRq/5LDJmFE=
 github.com/masonhubco/rebar/samples/graphql v0.0.0-20210118195811-5c9ee77bf413 h1:55DRFryUBpumnY2oqF00jyF0oOxK2qDjyMr/7YOAvlM=
 github.com/masonhubco/rebar/samples/graphql v0.0.0-20210118195811-5c9ee77bf413/go.mod h1:I6M66sfbUy4NthOKf6jIfQ92vmZhAPpLjRCPUNP3Ngc=
-github.com/masonhubco/rebar/v2 v2.0.0 h1:qCUB6quiOpeuLOn+9xLrI5xSITmVMO0fmoeUkSMMUtE=
-github.com/masonhubco/rebar/v2 v2.0.0/go.mod h1:cUN4/XlBjqsnsPkHQCPAUtbjgNJgvEOZNG8IKhE6tSM=
+github.com/masonhubco/rebar/v2 v2.1.0 h1:9+R0Z4ApmQXwpXi8M5/Q8xTzBXct8tYP322Qa0VdMnk=
+github.com/masonhubco/rebar/v2 v2.1.0/go.mod h1:cUN4/XlBjqsnsPkHQCPAUtbjgNJgvEOZNG8IKhE6tSM=
 github.com/matryer/moq v0.0.0-20200106131100-75d0ddfc0007/go.mod h1:9ELz6aaclSIGnZBoaSLZ3NAl1VTufbOrXBPvtcy6WiQ=
 github.com/mattn/go-colorable v0.1.4/go.mod h1:U0ppj6V5qS13XJ6of8GYAs25YV2eR4EVcfRqFIhoBtE=
 github.com/mattn/go-isatty v0.0.8/go.mod h1:Iq45c/XA43vh69/j3iqttzPXn0bhXyGjM0Hdxcsrc5s=
