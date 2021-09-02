@@ -4,7 +4,7 @@ go 1.16
 
 require (
 	github.com/gin-gonic/gin v1.7.4
-	github.com/gofrs/uuid v4.0.0+incompatible
+	github.com/gofrs/uuid v3.3.0+incompatible
 	github.com/golang/mock v1.6.0
 	github.com/kr/pretty v0.2.0 // indirect
 	github.com/stretchr/testify v1.7.0
