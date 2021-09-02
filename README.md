@@ -10,3 +10,4 @@ Rebar is the structural element for services at MasonHub (after we replace Buffa
   - replaced Gorilla Mux with Gin
   - better Logger middleware with zap
   - improved graceful shutdown with cancelable context
+  - updated time duration based option names

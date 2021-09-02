@@ -6,6 +6,13 @@ V2 rebar introduced a few improvements
 - Replaced Gorilla Mux with Gin
 - Better [Logger](./middleware/logger.go) middleware with zap
 - Improved graceful shutdown with cancelable context
+- Updated time duration based option names
+
+### Getting started
+
+```shell
+go get github.com/masonhubco/rebar/v2
+```
 
 ### Examples
 
