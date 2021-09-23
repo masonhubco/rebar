@@ -8,7 +8,7 @@ import (
 	"github.com/masonhubco/rebar/v2"
 )
 
-// BasicJWTAuth allows you to create a middleware with the SystemToken
+// BasicJWT returns a middleware that allows you to create a middleware with the SystemToken
 func BasicJWT(systemToken string) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		logger := rebar.LoggerFrom(c)

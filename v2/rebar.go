@@ -111,7 +111,7 @@ func ContextWithCancel() (context.Context, context.CancelFunc) {
 
 func CancelOnSignal(stop context.CancelFunc) {
 	// wait for interrupt signal to gracefully shutdown the server with a timeout
-	sig := make(chan os.Signal)
+	sig := make(chan os.Signal, 1)
 	// kill (no param) default send syscall.SIGTERM
 	// kill -2 is syscall.SIGINT
 	// kill -9 is syscall.SIGKILL but can't be catch, so don't need add it

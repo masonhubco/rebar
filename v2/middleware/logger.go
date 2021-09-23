@@ -21,6 +21,7 @@ type LoggerConfig struct {
 
 const RequestIDField = "X-Request-ID"
 
+// Logger returns a middleware that that will write structured http request logs with zap
 func Logger(logger rebar.Logger) gin.HandlerFunc {
 	return LoggerWithConfig(logger, LoggerConfig{
 		RequestIDField: RequestIDField,

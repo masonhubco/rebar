@@ -1,7 +1,6 @@
 package rebar
 
 import (
-	"github.com/gin-gonic/gin"
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
 )
@@ -27,18 +26,4 @@ func NewStandardLogger() (Logger, error) {
 	config.EncoderConfig.EncodeTime = zapcore.RFC3339TimeEncoder
 	config.EncoderConfig.EncodeCaller = zapcore.ShortCallerEncoder
 	return config.Build()
-}
-
-func LoggerFrom(c *gin.Context) Logger {
-	if maybeALogger, exists := c.Get(LoggerKey); exists {
-		if logger, ok := maybeALogger.(Logger); ok {
-			return logger
-		}
-	}
-	defaultLogger, _ := NewStandardLogger()
-	return defaultLogger
-}
-
-func RequestIDFrom(c *gin.Context) string {
-	return c.GetString(RequestIDKey)
 }
