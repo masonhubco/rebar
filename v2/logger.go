@@ -6,11 +6,6 @@ import (
 	"go.uber.org/zap/zapcore"
 )
 
-const (
-	LoggerKey    = "rebarLogger"
-	RequestIDKey = "requestID"
-)
-
 type Logger interface {
 	Debug(msg string, fields ...zap.Field)
 	Error(msg string, fields ...zap.Field)
