@@ -99,6 +99,17 @@ type Options struct {
 }
 ```
 
+### Middleware
+
+- `middleware.ForceSSL`
+- `middleware.I18n`
+- `middleware.Logger`
+- `middleware.Recovery`
+- `middleware.Transaction`
+- `middleware.BaiscJWT`
+
+[Examples for rebar middleware](./middleware).
+
 ### Upgrade from `v0` to `v2`
 
 <table>

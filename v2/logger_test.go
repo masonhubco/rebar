@@ -7,12 +7,9 @@ import (
 	"sync"
 	"testing"
 
-	"github.com/gin-gonic/gin"
 	"github.com/masonhubco/rebar/v2"
-	"github.com/masonhubco/rebar/v2/mocks"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
-	"go.uber.org/zap"
 )
 
 func Test_NewStandardLogger(t *testing.T) {
@@ -84,90 +81,4 @@ func stdoutAndStderrFrom(t *testing.T, fn func()) string {
 	fn()
 	writer.Close()
 	return <-out
-}
-
-func Test_LoggerFrom(t *testing.T) {
-	tests := []struct {
-		name  string
-		given *gin.Context
-		want  rebar.Logger
-	}{
-		{
-			name: "no logger in context",
-			given: &gin.Context{
-				Keys: map[string]interface{}{
-					"notALogger": "not a logger",
-				},
-			},
-			want: &zap.Logger{}, // only need to check the type
-		},
-		{
-			name: "logger in context is not an instance of Logger",
-			given: &gin.Context{
-				Keys: map[string]interface{}{
-					rebar.LoggerKey: "not an instance of Logger",
-				},
-			},
-			want: &zap.Logger{}, // only need to check the type
-		},
-		{
-			name: "happy path",
-			given: &gin.Context{
-				Keys: map[string]interface{}{
-					rebar.LoggerKey: &mocks.Logger{},
-				},
-			},
-			want: &mocks.Logger{}, // only need to check the type
-		},
-	}
-
-	for _, tc := range tests {
-		t.Run(tc.name, func(t *testing.T) {
-			got := rebar.LoggerFrom(tc.given)
-			assert.IsType(t, tc.want, got)
-		})
-	}
-}
-
-func Test_RequestIDFrom(t *testing.T) {
-	tests := []struct {
-		name  string
-		given *gin.Context
-		want  string
-	}{
-		{
-			name: "no request id in context",
-			given: &gin.Context{
-				Keys: map[string]interface{}{
-					"notARequestID": "not a request ID",
-				},
-			},
-			want: "",
-		},
-		{
-			name: "request id in context is not a string",
-			given: &gin.Context{
-				Keys: map[string]interface{}{
-					rebar.RequestIDKey: 12345, // wrong type should be a string
-				},
-			},
-			want: "",
-		},
-		{
-			name: "happy path",
-			given: &gin.Context{
-				Keys: map[string]interface{}{
-					rebar.RequestIDKey: "test-request-id",
-				},
-			},
-			want: "test-request-id",
-		},
-	}
-
-	for _, tc := range tests {
-		t.Run(tc.name, func(t *testing.T) {
-			got := rebar.RequestIDFrom(tc.given)
-			assert.Equal(t, tc.want, got)
-		})
-	}
 }
