@@ -69,6 +69,23 @@ func (mr *LoggerMockRecorder) Error(arg0 interface{}, arg1 ...interface{}) *gomo
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Error", reflect.TypeOf((*Logger)(nil).Error), varargs...)
 }
 
+// Fatal mocks base method.
+func (m *Logger) Fatal(arg0 string, arg1 ...zapcore.Field) {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0}
+	for _, a := range arg1 {
+		varargs = append(varargs, a)
+	}
+	m.ctrl.Call(m, "Fatal", varargs...)
+}
+
+// Fatal indicates an expected call of Fatal.
+func (mr *LoggerMockRecorder) Fatal(arg0 interface{}, arg1 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0}, arg1...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Fatal", reflect.TypeOf((*Logger)(nil).Fatal), varargs...)
+}
+
 // Info mocks base method.
 func (m *Logger) Info(arg0 string, arg1 ...zapcore.Field) {
 	m.ctrl.T.Helper()

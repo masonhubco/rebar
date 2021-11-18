@@ -5,8 +5,8 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/masonhubco/rebar/v2"
-	"github.com/masonhubco/rebar/v2/examples/standard/api"
-	"github.com/masonhubco/rebar/v2/examples/standard/models"
+	"github.com/masonhubco/rebar/v2/examples/graceful/api"
+	"github.com/masonhubco/rebar/v2/examples/graceful/models"
 	"github.com/masonhubco/rebar/v2/middleware"
 )
 
@@ -28,10 +28,19 @@ func New(
 		apiGroup.Use(middleware.BasicJWT("blah"))
 		apiGroup.GET("/status", api.Status(info))
 	}
+
+	// create a worker and start it in a goroutine
+	wrkr := newWorker(logger)
+	go wrkr.start()
+
 	return app, func() error {
 		// waiting for shutdown signal
 		<-ctx.Done()
-		// shutdown received, stopping...
+
+		logger.Info("graceful shutdown signal received, stopping worker...")
+		// shutdown received, stopping worker
+		wrkr.stop()
+		logger.Info("worker gracefully stopped")
 		return nil
 	}, nil
 }

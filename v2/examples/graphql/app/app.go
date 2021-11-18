@@ -1,6 +1,7 @@
 package app
 
 import (
+	"context"
 	"net/http"
 
 	"github.com/99designs/gqlgen/graphql/handler"
@@ -11,13 +12,17 @@ import (
 	"github.com/masonhubco/rebar/v2"
 	"github.com/masonhubco/rebar/v2/examples/graphql/api"
 	"github.com/masonhubco/rebar/v2/examples/graphql/graph"
+	"github.com/masonhubco/rebar/v2/examples/graphql/models"
 	"github.com/masonhubco/rebar/v2/middleware"
 	"github.com/rs/cors"
 )
 
-func App() *rebar.Rebar {
-	logger, _ := rebar.NewStandardLogger()
-	app := rebar.New(rebar.Options{
+func New(
+	ctx context.Context,
+	logger rebar.Logger,
+	info models.Status,
+) (app *rebar.Rebar, shutdown func() error, err error) {
+	app = rebar.New(rebar.Options{
 		Environment: "development",
 		Port:        "3005",
 		Logger:      logger,
@@ -28,14 +33,19 @@ func App() *rebar.Rebar {
 	apiGroup := app.Router.Group("/api")
 	{
 		apiGroup.Use(middleware.BasicJWT("blah"))
-		apiGroup.GET("/status", api.Status)
+		apiGroup.GET("/status", api.Status(info))
 	}
 
 	app.Router.POST("/query", graphQLHandler(app.Environment))
 	if app.Environment == rebar.Development {
 		app.Router.GET("/play", playgroundHandler())
 	}
-	return app
+	return app, func() error {
+		// waiting for shutdown signal
+		<-ctx.Done()
+		// shutdown received, stopping...
+		return nil
+	}, nil
 }
 
 func graphQLHandler(environment string) gin.HandlerFunc {
