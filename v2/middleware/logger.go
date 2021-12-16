@@ -47,7 +47,7 @@ func LoggerWithConfig(logger rebar.Logger, conf LoggerConfig) gin.HandlerFunc {
 		}
 		c.Header(conf.RequestIDField, reqID)
 		c.Set(rebar.RequestIDKey, reqID)
-		c.Set(rebar.LoggerKey, logger.With(zap.String(RequestIDField, reqID)))
+		c.Set(rebar.LoggerKey, logger.With(zap.String("request_id", reqID)))
 
 		// Start timer
 		start := time.Now()
