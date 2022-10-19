@@ -1,0 +1,44 @@
+name: Unit Testing & Coverage Report
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - master
+      - staging
+      - integration
+  pull_request:
+    types: [opened, synchronize, reopened, ready_for_review]
+
+jobs:
+  test:
+    name: Unit Tests
+    runs-on: ubuntu-latest
+
+    env:
+      GO111MODULE: "on"
+      GOPRIVATE: "github.com/masonhubco/*"
+      DJJ_GITHUB_ACCESS_TOKEN: ${{ secrets.DJJ_GITHUB_ACCESS_TOKEN }}
+
+    steps:
+      - name: Install Go
+        uses: actions/setup-go@v3
+        with:
+          go-version: 1.14
+
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Execute Tests
+        run: |
+          git config --global url."https://djj-99:${DJJ_GITHUB_ACCESS_TOKEN}@github.com".insteadOf https://github.com
+          make test
+
+      - name: Convert coverage report
+        uses: jandelgado/gcov2lcov-action@v1.0.9
+
+      - name: Report to Coveralls
+        uses: coverallsapp/github-action@master
+        with:
+          path-to-lcov: coverage.lcov
+          github-token: ${{ secrets.GITHUB_TOKEN }}

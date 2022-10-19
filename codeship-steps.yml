@@ -1,8 +1,0 @@
-# Test
-- type: parallel
-  steps:
-  - service: test
-    command: >-
-      /bin/sh -c '
-      make test &&
-      .codeship/publish_coverage.sh'

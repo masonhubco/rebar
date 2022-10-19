@@ -1,8 +1,0 @@
-test:
-  build:
-    dockerfile: .codeship/build.Dockerfile
-  environment:
-    ENV: test
-    GO111MODULE: "on"
-  encrypted_env_file: .codeship/env.encrypted
-  cached: true
