@@ -1,4 +1,4 @@
-name: Unit Testing & Coverage Report
+name: Unit Testing
 
 on:
   workflow_dispatch:
@@ -33,12 +33,3 @@ jobs:
         run: |
           git config --global url."https://djj-99:${DJJ_GITHUB_ACCESS_TOKEN}@github.com".insteadOf https://github.com
           make test
-
-      - name: Convert coverage report
-        uses: jandelgado/gcov2lcov-action@v1.0.9
-
-      - name: Report to Coveralls
-        uses: coverallsapp/github-action@master
-        with:
-          path-to-lcov: coverage.lcov
-          github-token: ${{ secrets.GITHUB_TOKEN }}
