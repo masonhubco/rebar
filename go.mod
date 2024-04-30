@@ -3,8 +3,8 @@ module github.com/masonhubco/rebar
 go 1.14
 
 require (
-	github.com/99designs/gqlgen v0.13.0 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
+	github.com/gorilla/handlers v1.5.2
 	github.com/gorilla/mux v1.8.0
 	github.com/kr/pretty v0.2.0 // indirect
 	github.com/stretchr/testify v1.6.1

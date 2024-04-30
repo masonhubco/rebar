@@ -10,6 +10,7 @@ import (
 	"sync"
 	"time"
 
+	"github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
 )
 
@@ -56,6 +57,11 @@ type Processor interface {
 // *IdleTimeout*: 60 seconds
 func New(ro Options) *Rebar {
 	router := mux.NewRouter()
+	headers := handlers.AllowedHeaders([]string{"Content-Type", "Authorization"})
+	methods := handlers.AllowedMethods([]string{http.MethodPost, http.MethodGet, http.MethodOptions})
+	origins := handlers.AllowedOrigins([]string{"*"})
+	credentials := handlers.AllowCredentials()
+	
 	return &Rebar{
 		Environment: func(env string) string {
 			if env == "" {
@@ -76,7 +82,7 @@ func New(ro Options) *Rebar {
 			WriteTimeout: defaultTimeout(ro.WriteTimeoutInSec, 15, time.Second),
 			ReadTimeout:  defaultTimeout(ro.ReadTimeoutInSec, 15, time.Second),
 			IdleTimeout:  defaultTimeout(ro.IdleTimeoutInSec, 60, time.Second),
-			Handler:      router, // Pass our instance of gorilla/mux in.
+			Handler:      handlers.CORS(headers, methods, origins, credentials)(router),
 		},
 	}
 }
