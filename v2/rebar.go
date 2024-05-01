@@ -13,6 +13,7 @@ import (
 	"time"
 
 	"github.com/gin-gonic/gin"
+	"github.com/gorilla/handlers"
 )
 
 // Rebar is the MasonHub Base App
@@ -39,8 +40,12 @@ type Rebar struct {
 func New(opts Options) *Rebar {
 	opts = opts.ValuesOrDefaults()
 	gin.SetMode(opts.Mode())
-
 	router := gin.New()
+	headers := handlers.AllowedHeaders([]string{"Content-Type", "Authorization"})
+	methods := handlers.AllowedMethods([]string{http.MethodPost, http.MethodGet, http.MethodOptions})
+	origins := handlers.AllowedOrigins([]string{"*"})
+	credentials := handlers.AllowCredentials()
+
 	return &Rebar{
 		Environment:                 opts.Environment,
 		Router:                      router,
@@ -51,7 +56,7 @@ func New(opts Options) *Rebar {
 			WriteTimeout:   opts.WriteTimeout,
 			ReadTimeout:    opts.ReadTimeout,
 			IdleTimeout:    opts.IdleTimeout,
-			Handler:        router,
+			Handler:      handlers.CORS(headers, methods, origins, credentials)(router),
 			MaxHeaderBytes: 1 << 20,
 		},
 	}
