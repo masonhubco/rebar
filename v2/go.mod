@@ -6,6 +6,7 @@ require (
 	github.com/gin-gonic/gin v1.7.4
 	github.com/gofrs/uuid v3.3.0+incompatible
 	github.com/golang/mock v1.6.0
+	github.com/gorilla/handlers v1.5.2
 	github.com/jmoiron/sqlx v1.2.1-0.20191203222853-2ba0fc60eb4a
 	github.com/qor/admin v1.2.0 // indirect
 	github.com/qor/cache v0.0.0-20171031031927-c9d48d1f13ba // indirect
